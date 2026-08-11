@@ -1,0 +1,563 @@
+<style>
+/* ── Combos Section ── */
+#section-{{ section.id }} {
+  position: relative;
+  z-index: 2;
+  padding-block: var(--sec-y);
+}
+
+/* ── Horizontal scroll rail ── */
+.comborail-outer {
+  position: relative;
+  margin-top: 48px;
+}
+
+.comborail {
+  display: flex;
+  gap: 22px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 16px;
+  padding-inline: calc((100vw - min(var(--maxw), 100% - 48px)) / 2);
+
+  /* Hide scrollbar — style for webkit */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(236,230,247,.2) transparent;
+}
+
+.comborail::-webkit-scrollbar {
+  height: 4px;
+}
+.comborail::-webkit-scrollbar-track {
+  background: transparent;
+}
+.comborail::-webkit-scrollbar-thumb {
+  background: rgba(236,230,247,.2);
+  border-radius: 999px;
+}
+
+/* ── Combo card ── */
+.combocard {
+  flex: 0 0 340px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-radius: var(--r);
+  overflow: hidden;
+  background: var(--g-bg);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid var(--g-line);
+  box-shadow: var(--g-shadow), var(--g-inset);
+  transition: transform .35s var(--ease);
+}
+
+.combocard:hover {
+  transform: translateY(-6px);
+}
+
+/* Top area — product tray */
+.combo-top {
+  position: relative;
+  background: rgba(23,16,43,.35);
+  padding: 28px 20px 20px;
+}
+
+/* Savings badge */
+.combo-savings {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 5px 13px;
+  border-radius: 999px;
+  font-family: var(--font-head);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--accent-2), #7ab318);
+  color: #08211a;
+}
+
+/* Most popular flag */
+.combo-flag {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-family: var(--font-head);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  background: rgba(75,58,143,.6);
+  border: 1px solid rgba(107,85,184,.7);
+  color: var(--paper);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Product stack (tray) */
+.tray {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+  min-height: 160px;
+  padding-top: 24px;
+}
+
+.it {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  max-width: 100px;
+}
+
+.it-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(236,230,247,.08);
+  border: 1px solid var(--g-line);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.it-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.it-img-placeholder {
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.it:nth-child(2) .it-img {
+  width: 96px;
+  height: 96px;
+  border-radius: 16px;
+}
+
+.it-label {
+  font-size: .72rem;
+  color: var(--paper-3);
+  text-align: center;
+  line-height: 1.3;
+  max-width: 90px;
+}
+
+/* Combo card body */
+.combo-body {
+  padding: 22px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.combo-name {
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--paper);
+  line-height: 1.3;
+}
+
+.combo-count {
+  font-size: .78rem;
+  color: var(--paper-3);
+  letter-spacing: .04em;
+}
+
+.combo-desc {
+  font-size: .82rem;
+  color: var(--paper-3);
+  line-height: 1.6;
+}
+
+.combo-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.combo-price {
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--paper);
+}
+
+.combo-compare {
+  font-size: .88rem;
+  color: var(--paper-3);
+  text-decoration: line-through;
+}
+
+.combo-cta {
+  margin-top: 4px;
+  width: 100%;
+  height: 44px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-family: var(--font-head);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  background: linear-gradient(135deg, var(--accent-2), #5d8d1c);
+  color: #08211a;
+  box-shadow: 0 10px 28px rgba(201,118,29,.32);
+  transition: .3s var(--ease);
+}
+
+.combo-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(201,118,29,.46);
+}
+
+/* Scroll indicators */
+.comborail-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.comborail-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--g-line);
+  transition: background .3s;
+}
+
+.comborail-dot.on {
+  background: var(--accent);
+  width: 20px;
+  border-radius: 999px;
+}
+
+@media (max-width: 600px) {
+  .combocard { flex: 0 0 290px; }
+}
+</style>
+
+<section
+  id="section-{{ section.id }}"
+  class="sec"
+  data-scene="3"
+  aria-labelledby="combos-heading-{{ section.id }}"
+>
+  <div class="wrap">
+    <div class="panel-head rv">
+      <p class="kicker">{{ section.settings.kicker | default: 'Curated Combos' }}</p>
+      <h2 class="d2" id="combos-heading-{{ section.id }}">
+        {{ section.settings.title | default: 'Best Selling Combos' }}
+      </h2>
+      {%- if section.settings.subheading != blank -%}
+        <p class="lede" style="margin-top:8px;">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+      <div class="rule"></div>
+    </div>
+  </div>
+
+  <!-- Full-bleed scroll rail -->
+  <div class="comborail-outer rv" data-delay="2">
+    <div class="comborail" id="comborail-{{ section.id }}" role="list">
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'combo' -%}
+
+          {%- comment -%} Resolve product objects {%- endcomment -%}
+          {%- assign p1 = all_products[block.settings.product_1] -%}
+          {%- assign p2 = all_products[block.settings.product_2] -%}
+          {%- assign p3 = all_products[block.settings.product_3] -%}
+
+          <article class="combocard" {{ block.shopify_attributes }} role="listitem">
+
+            <!-- Top: product stack -->
+            <div class="combo-top">
+              {%- if block.settings.flag != blank -%}
+                <span class="combo-flag">{{ block.settings.flag }}</span>
+              {%- endif -%}
+
+              {%- if block.settings.savings_text != blank -%}
+                <span class="combo-savings">{{ block.settings.savings_text }}</span>
+              {%- endif -%}
+
+              <div class="tray" aria-hidden="true">
+                <!-- Product 1 -->
+                <div class="it">
+                  <div class="it-img">
+                    {%- if p1 and p1.featured_image -%}
+                      <img src="{{ p1.featured_image | image_url: width: 200 }}" alt="{{ p1.title | escape }}" width="200" height="200" loading="lazy">
+                    {%- else -%}
+                      <div class="it-img-placeholder">🌿</div>
+                    {%- endif -%}
+                  </div>
+                  <span class="it-label">{{ p1.title | default: 'Product 1' | truncate: 22 }}</span>
+                </div>
+
+                <!-- Product 2 (center, larger) -->
+                <div class="it">
+                  <div class="it-img">
+                    {%- if p2 and p2.featured_image -%}
+                      <img src="{{ p2.featured_image | image_url: width: 220 }}" alt="{{ p2.title | escape }}" width="220" height="220" loading="lazy">
+                    {%- else -%}
+                      <div class="it-img-placeholder">🌱</div>
+                    {%- endif -%}
+                  </div>
+                  <span class="it-label">{{ p2.title | default: 'Product 2' | truncate: 22 }}</span>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="it">
+                  <div class="it-img">
+                    {%- if p3 and p3.featured_image -%}
+                      <img src="{{ p3.featured_image | image_url: width: 200 }}" alt="{{ p3.title | escape }}" width="200" height="200" loading="lazy">
+                    {%- else -%}
+                      <div class="it-img-placeholder">🍃</div>
+                    {%- endif -%}
+                  </div>
+                  <span class="it-label">{{ p3.title | default: 'Product 3' | truncate: 22 }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Body -->
+            <div class="combo-body">
+              <div>
+                <p class="combo-name">{{ block.settings.name | default: 'Starter Combo' }}</p>
+                {%- if block.settings.product_count != blank -%}
+                  <p class="combo-count">{{ block.settings.product_count }} products included</p>
+                {%- endif -%}
+              </div>
+
+              {%- if block.settings.description != blank -%}
+                <p class="combo-desc">{{ block.settings.description }}</p>
+              {%- endif -%}
+
+              <div class="combo-price-row">
+                <span class="combo-price">{{ block.settings.price | default: '₹499' }}</span>
+                {%- if block.settings.compare_price != blank -%}
+                  <span class="combo-compare">{{ block.settings.compare_price }}</span>
+                {%- endif -%}
+              </div>
+
+              <a
+                href="{{ block.settings.cta_url | default: '/collections/all' }}"
+                class="combo-cta"
+                aria-label="{{ block.settings.cta_label | default: 'Shop Bundle' }} — {{ block.settings.name }}"
+              >
+                {{ block.settings.cta_label | default: 'Shop Bundle' }}
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                </svg>
+              </a>
+            </div>
+
+          </article>
+
+        {%- endif -%}
+      {%- endfor -%}
+
+    </div><!-- /comborail -->
+  </div><!-- /comborail-outer -->
+
+</section>
+
+<script>
+/* Combo rail scroll-snap dot indicator */
+(function () {
+  var rail = document.getElementById('comborail-{{ section.id }}');
+  if (!rail) return;
+
+  var dots = document.querySelectorAll('#section-{{ section.id }} .comborail-dot');
+  if (!dots.length) return;
+
+  rail.addEventListener('scroll', function () {
+    var cardWidth = rail.querySelector('.combocard') ? rail.querySelector('.combocard').offsetWidth + 22 : 362;
+    var idx = Math.round(rail.scrollLeft / cardWidth);
+    dots.forEach(function (d, i) {
+      d.classList.toggle('on', i === idx);
+    });
+  }, { passive: true });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Purelane Combos",
+  "tag": "div",
+  "class": "purelane-combos-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker label",
+      "default": "Curated Combos"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section heading",
+      "default": "Best Selling Combos"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Handpicked bundles that work beautifully together — save more, clean better."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "combo",
+      "name": "Combo Card",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Combo name",
+          "default": "Kitchen Starter Kit"
+        },
+        {
+          "type": "text",
+          "id": "product_count",
+          "label": "Product count label",
+          "default": "3"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Short description",
+          "default": "Everything you need to keep your kitchen naturally clean and fresh all week."
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Bundle price (display only, e.g. ₹499)",
+          "default": "₹499"
+        },
+        {
+          "type": "text",
+          "id": "compare_price",
+          "label": "Compare-at price (display only)",
+          "default": "₹699"
+        },
+        {
+          "type": "text",
+          "id": "savings_text",
+          "label": "Savings badge text",
+          "default": "Save 28%"
+        },
+        {
+          "type": "text",
+          "id": "flag",
+          "label": "Flag label (e.g. Most Popular) — leave blank to hide",
+          "default": "Most Popular"
+        },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "CTA button label",
+          "default": "Shop Bundle"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "CTA button URL"
+        },
+        {
+          "type": "header",
+          "content": "Products in this combo"
+        },
+        {
+          "type": "product",
+          "id": "product_1",
+          "label": "Product 1"
+        },
+        {
+          "type": "product",
+          "id": "product_2",
+          "label": "Product 2 (shown larger, centre)"
+        },
+        {
+          "type": "product",
+          "id": "product_3",
+          "label": "Product 3"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Purelane Combos",
+      "blocks": [
+        {
+          "type": "combo",
+          "settings": {
+            "name": "Kitchen Starter Kit",
+            "product_count": "3",
+            "description": "Everything you need to keep your kitchen naturally clean and fresh all week.",
+            "price": "₹499",
+            "compare_price": "₹699",
+            "savings_text": "Save 28%",
+            "flag": "Most Popular",
+            "cta_label": "Shop Bundle"
+          }
+        },
+        {
+          "type": "combo",
+          "settings": {
+            "name": "Bathroom Hero Combo",
+            "product_count": "3",
+            "description": "Plant-powered bathroom cleaning from tiles to taps — no scrubbing required.",
+            "price": "₹549",
+            "compare_price": "₹749",
+            "savings_text": "Save 26%",
+            "flag": "",
+            "cta_label": "Shop Bundle"
+          }
+        },
+        {
+          "type": "combo",
+          "settings": {
+            "name": "Full Home Bundle",
+            "product_count": "5",
+            "description": "Our complete collection for every room. One order, whole house sorted.",
+            "price": "₹899",
+            "compare_price": "₹1299",
+            "savings_text": "Save 31%",
+            "flag": "Best Value",
+            "cta_label": "Shop Bundle"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,297 @@
+/* ============================================================
+   Purelane — Base CSS
+   Design tokens, utilities, typography, layout shells
+   ============================================================ */
+
+/* ── Google Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
+
+/* ── Design Tokens ── */
+:root {
+  --ink:       #17102b;
+  --deep:      #241a3d;
+  --brand:     #4b3a8f;
+  --brand-lt:  #6b55b8;
+  --paper:     #ece6f7;
+  --paper-2:   rgba(236,230,247,.74);
+  --paper-3:   rgba(236,230,247,.52);
+  --accent:    #f0a03c;
+  --accent-2:  #c9761d;
+  --surface:   #faf7fd;
+  --lime:      #8ac926;
+
+  --g-bg:      linear-gradient(158deg,rgba(236,230,247,.15),rgba(75,58,143,.20) 58%,rgba(23,16,43,.28));
+  --g-line:    rgba(236,230,247,.22);
+  --g-shadow:  0 26px 74px rgba(18,12,34,.44);
+  --g-inset:   inset 0 1px 0 rgba(255,255,255,.24);
+
+  --r:         26px;
+  --r-sm:      16px;
+  --maxw:      1180px;
+  --sec-y:     80px;
+  --ease:      cubic-bezier(.2,.7,.2,1);
+
+  --font-head: 'Outfit', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--ink);
+  color: var(--paper);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+img, video { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font: inherit; border: none; background: none; }
+ul, ol { list-style: none; }
+
+/* ── Layout ── */
+.wrap {
+  width: min(var(--maxw), 100% - 48px);
+  margin-inline: auto;
+}
+
+.sec {
+  position: relative;
+  z-index: 1;
+}
+
+.sec-pad {
+  padding-block: var(--sec-y);
+}
+
+/* ── Glass Utility ── */
+.glass {
+  background: var(--g-bg);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid var(--g-line);
+  border-radius: var(--r);
+  box-shadow: var(--g-shadow), var(--g-inset);
+}
+
+.glass-sm {
+  background: var(--g-bg);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--g-line);
+  border-radius: var(--r-sm);
+  box-shadow: 0 12px 40px rgba(18,12,34,.35), var(--g-inset);
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 22px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  transition: .35s var(--ease);
+  white-space: nowrap;
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-head);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-2), #5d8d1c);
+  color: #08211a;
+  box-shadow: 0 12px 30px rgba(201,118,29,.34);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px rgba(201,118,29,.48);
+}
+.btn-primary:active { transform: translateY(0); }
+
+.btn-ghost {
+  background: rgba(236,230,247,.10);
+  border: 1px solid rgba(236,230,247,.30);
+  color: var(--surface);
+}
+.btn-ghost:hover {
+  background: rgba(236,230,247,.18);
+  border-color: rgba(236,230,247,.55);
+  transform: translateY(-2px);
+}
+.btn-ghost:active { transform: translateY(0); }
+
+.btn-lg {
+  height: 54px;
+  padding: 0 30px;
+  font-size: 13.5px;
+}
+
+/* ── Typography ── */
+.d1 {
+  font-family: var(--font-head);
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -.02em;
+}
+
+.d2 {
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -.018em;
+}
+
+.d3 {
+  font-family: var(--font-head);
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -.012em;
+}
+
+.kicker {
+  font-family: var(--font-head);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.lede {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--paper-3);
+}
+
+.body-s {
+  font-family: var(--font-body);
+  font-size: .85rem;
+  line-height: 1.55;
+  color: var(--paper-3);
+}
+
+.lime { color: var(--lime); }
+.accent { color: var(--accent); }
+
+/* ── Panel Head ── */
+.panel-head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+  max-width: 680px;
+  margin-inline: auto;
+}
+
+.panel-head .kicker { margin-bottom: 4px; }
+
+/* ── Rule Divider ── */
+.rule {
+  width: 48px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-2), var(--lime));
+  border-radius: 999px;
+  margin: 16px auto 0;
+}
+
+.rule-left { margin-left: 0; }
+
+/* ── Reveal Animation ── */
+.rv {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .6s var(--ease), transform .6s var(--ease);
+}
+
+.rv.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.rv[data-delay="1"] { transition-delay: .1s; }
+.rv[data-delay="2"] { transition-delay: .2s; }
+.rv[data-delay="3"] { transition-delay: .3s; }
+.rv[data-delay="4"] { transition-delay: .4s; }
+.rv[data-delay="5"] { transition-delay: .5s; }
+.rv[data-delay="6"] { transition-delay: .6s; }
+.rv[data-delay="7"] { transition-delay: .7s; }
+.rv[data-delay="8"] { transition-delay: .8s; }
+
+/* ── Star Rating ── */
+.stars {
+  display: inline-flex;
+  gap: 2px;
+  color: var(--accent);
+  font-size: .9rem;
+}
+
+/* ── Badge Pill ── */
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  background: rgba(138,201,38,.18);
+  color: var(--lime);
+  border: 1px solid rgba(138,201,38,.30);
+}
+
+/* ── Scrollbar styling ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(236,230,247,.25); border-radius: 999px; }
+
+/* ── Focus styles ── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Selection ── */
+::selection {
+  background: rgba(75,58,143,.5);
+  color: var(--paper);
+}
+
+/* ── Reduced Motion Override ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .rv {
+    opacity: 1;
+    transform: none;
+  }
+}

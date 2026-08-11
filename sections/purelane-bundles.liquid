@@ -1,0 +1,593 @@
+<style>
+/* ── Bundles Section ── */
+#section-{{ section.id }} {
+  position: relative;
+  z-index: 2;
+  padding-block: var(--sec-y);
+}
+
+/* ── Glass header block ── */
+.bundles-header {
+  text-align: center;
+  padding: 48px 32px;
+  border-radius: var(--r);
+  margin-bottom: 48px;
+  background: var(--g-bg);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid var(--g-line);
+  box-shadow: var(--g-shadow), var(--g-inset);
+}
+
+.bundles-header .d2 {
+  margin-bottom: 12px;
+}
+
+.bundles-header .lede {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+/* ── Tier grid ── */
+.tiers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .tiers { grid-template-columns: 1fr; max-width: 440px; margin-inline: auto; }
+}
+
+/* ── Tier card ── */
+.tier {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-radius: var(--r);
+  overflow: hidden;
+  background: var(--g-bg);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid var(--g-line);
+  box-shadow: 0 20px 60px rgba(18,12,34,.4), var(--g-inset);
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+
+.tier:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 32px 80px rgba(18,12,34,.55), var(--g-inset);
+}
+
+/* Featured / best tier */
+.tier.best {
+  border-color: var(--accent);
+  box-shadow: 0 20px 60px rgba(18,12,34,.4), 0 0 0 1px var(--accent), var(--g-inset);
+}
+
+.tier.best:hover {
+  box-shadow: 0 32px 80px rgba(201,118,29,.3), 0 0 0 2px var(--accent), var(--g-inset);
+}
+
+/* Tag strip at top */
+.tier-tag {
+  padding: 10px 20px;
+  text-align: center;
+  font-family: var(--font-head);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  background: rgba(236,230,247,.08);
+  border-bottom: 1px solid var(--g-line);
+  color: var(--paper-3);
+}
+
+.tier.best .tier-tag {
+  background: linear-gradient(90deg, rgba(201,118,29,.22), rgba(240,160,60,.18));
+  color: var(--accent);
+  border-bottom-color: rgba(240,160,60,.22);
+}
+
+/* Product image row */
+.tierpix {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
+  padding: 28px 20px 16px;
+  background: rgba(23,16,43,.28);
+  min-height: 140px;
+}
+
+.tierpix-item {
+  flex: 1;
+  max-width: 80px;
+  aspect-ratio: 1 / 1;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(236,230,247,.06);
+  border: 1px solid var(--g-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tierpix-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tierpix-item-placeholder {
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* Big qty number */
+.tier-qty {
+  text-align: center;
+  padding: 16px 20px 0;
+  font-family: var(--font-head);
+  font-size: 4rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -.04em;
+  color: var(--paper);
+  opacity: .12;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Card body */
+.tier-body {
+  padding: 0 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+
+.tier-price-block {
+  text-align: center;
+}
+
+.tier-price {
+  font-family: var(--font-head);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--paper);
+  line-height: 1.1;
+}
+
+.tier.best .tier-price { color: var(--accent); }
+
+.tier-compare {
+  font-size: .85rem;
+  color: var(--paper-3);
+  text-decoration: line-through;
+  margin-top: 2px;
+}
+
+.tier-per-unit {
+  margin-top: 4px;
+  font-size: .78rem;
+  color: var(--paper-3);
+  letter-spacing: .04em;
+}
+
+/* Perk checklist */
+.tier-perks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tier-perk {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: .83rem;
+  color: var(--paper-3);
+  line-height: 1.4;
+}
+
+.tier-perk-icon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(138,201,38,.18);
+  border: 1px solid rgba(138,201,38,.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.tier-perk-icon svg {
+  width: 10px;
+  height: 10px;
+  stroke: var(--lime, #8ac926);
+  fill: none;
+}
+
+/* CTA */
+.tier-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  border-radius: 999px;
+  font-family: var(--font-head);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: .35s var(--ease);
+}
+
+.tier-cta-primary {
+  background: linear-gradient(135deg, var(--accent-2), #5d8d1c);
+  color: #08211a;
+  box-shadow: 0 12px 30px rgba(201,118,29,.34);
+}
+
+.tier-cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px rgba(201,118,29,.48);
+}
+
+.tier-cta-ghost {
+  background: rgba(236,230,247,.08);
+  border: 1px solid rgba(236,230,247,.25);
+  color: var(--paper);
+}
+
+.tier-cta-ghost:hover {
+  background: rgba(236,230,247,.14);
+  border-color: rgba(236,230,247,.45);
+  transform: translateY(-2px);
+}
+
+/* Best badge */
+.best-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: rgba(240,160,60,.15);
+  border: 1px solid rgba(240,160,60,.28);
+  font-family: var(--font-head);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-align: center;
+  margin-bottom: -4px;
+}
+</style>
+
+<section
+  id="section-{{ section.id }}"
+  class="sec"
+  data-scene="4"
+  aria-labelledby="bundles-heading-{{ section.id }}"
+>
+  <div class="wrap">
+
+    <!-- Glass header -->
+    <div class="bundles-header rv">
+      <p class="kicker" style="margin-bottom:12px;">Bundle &amp; Save</p>
+      <h2 class="d2" id="bundles-heading-{{ section.id }}">
+        {{ section.settings.title | default: 'Choose Your Bundle' }}
+      </h2>
+      {%- if section.settings.subheading != blank -%}
+        <p class="lede" style="margin-top:10px;">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+
+    <!-- Tier grid -->
+    <div class="tiers" role="list">
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'tier' -%}
+          {%- assign is_featured = block.settings.is_featured -%}
+
+          {%- comment -%} Resolve collection for product images {%- endcomment -%}
+          {%- assign tier_collection = collections[block.settings.collection] -%}
+
+          <div
+            class="tier{% if is_featured %} best{% endif %} rv"
+            data-delay="{{ forloop.index }}"
+            {{ block.shopify_attributes }}
+            role="listitem"
+          >
+
+            <!-- Tag strip -->
+            {%- if block.settings.tag != blank -%}
+              <div class="tier-tag">{{ block.settings.tag }}</div>
+            {%- endif -%}
+
+            <!-- Product image row -->
+            <div class="tierpix" aria-hidden="true">
+              {%- if tier_collection != blank -%}
+                {%- for product in tier_collection.products limit: 3 -%}
+                  <div class="tierpix-item">
+                    {%- if product.featured_image -%}
+                      <img
+                        src="{{ product.featured_image | image_url: width: 180 }}"
+                        alt="{{ product.title | escape }}"
+                        width="180"
+                        height="180"
+                        loading="lazy"
+                      >
+                    {%- else -%}
+                      <div class="tierpix-item-placeholder">🌿</div>
+                    {%- endif -%}
+                  </div>
+                {%- else -%}
+                  <div class="tierpix-item"><div class="tierpix-item-placeholder">🌿</div></div>
+                  <div class="tierpix-item"><div class="tierpix-item-placeholder">🌱</div></div>
+                  <div class="tierpix-item"><div class="tierpix-item-placeholder">🍃</div></div>
+                {%- endfor -%}
+              {%- else -%}
+                <div class="tierpix-item"><div class="tierpix-item-placeholder">🌿</div></div>
+                <div class="tierpix-item"><div class="tierpix-item-placeholder">🌱</div></div>
+                <div class="tierpix-item"><div class="tierpix-item-placeholder">🍃</div></div>
+              {%- endif -%}
+            </div>
+
+            <!-- Large quantity watermark -->
+            {%- if block.settings.qty != blank -%}
+              <div class="tier-qty" aria-hidden="true">{{ block.settings.qty }}</div>
+            {%- endif -%}
+
+            <!-- Body -->
+            <div class="tier-body">
+
+              {%- if is_featured -%}
+                <div class="best-badge">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                  </svg>
+                  Most Popular
+                </div>
+              {%- endif -%}
+
+              <!-- Price block -->
+              <div class="tier-price-block">
+                <div class="tier-price">{{ block.settings.price | default: '₹499' }}</div>
+                {%- if block.settings.compare_price != blank -%}
+                  <div class="tier-compare">{{ block.settings.compare_price }}</div>
+                {%- endif -%}
+                {%- if block.settings.per_unit_note != blank -%}
+                  <div class="tier-per-unit">{{ block.settings.per_unit_note }}</div>
+                {%- endif -%}
+              </div>
+
+              <!-- Perks checklist -->
+              <ul class="tier-perks" role="list">
+                {%- if block.settings.perk_1 != blank -%}
+                  <li class="tier-perk">
+                    <span class="tier-perk-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    </span>
+                    {{ block.settings.perk_1 }}
+                  </li>
+                {%- endif -%}
+
+                {%- if block.settings.perk_2 != blank -%}
+                  <li class="tier-perk">
+                    <span class="tier-perk-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    </span>
+                    {{ block.settings.perk_2 }}
+                  </li>
+                {%- endif -%}
+
+                {%- if block.settings.perk_3 != blank -%}
+                  <li class="tier-perk">
+                    <span class="tier-perk-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    </span>
+                    {{ block.settings.perk_3 }}
+                  </li>
+                {%- endif -%}
+              </ul>
+
+              <!-- CTA -->
+              <a
+                href="{{ block.settings.cta_url | default: '/collections/all' }}"
+                class="tier-cta {% if is_featured %}tier-cta-primary{% else %}tier-cta-ghost{% endif %}"
+                aria-label="{{ block.settings.cta_label | default: 'Shop This Bundle' }} — {{ block.settings.tag }}"
+              >
+                {{ block.settings.cta_label | default: 'Shop This Bundle' }}
+              </a>
+
+            </div><!-- /tier-body -->
+          </div><!-- /tier -->
+
+        {%- endif -%}
+      {%- endfor -%}
+
+    </div><!-- /tiers -->
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Purelane Bundles",
+  "tag": "div",
+  "class": "purelane-bundles-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section heading",
+      "default": "Choose Your Bundle"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "The more you stock up, the more you save. All bundles include free shipping."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tier",
+      "name": "Bundle Tier",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Tier label (e.g. Starter, Family, Pro)",
+          "default": "Starter"
+        },
+        {
+          "type": "number",
+          "id": "qty",
+          "label": "Quantity (large background number)",
+          "default": 1
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price (display only, e.g. ₹499)",
+          "default": "₹499"
+        },
+        {
+          "type": "text",
+          "id": "compare_price",
+          "label": "Compare-at price (display only)",
+          "default": "₹699"
+        },
+        {
+          "type": "text",
+          "id": "per_unit_note",
+          "label": "Per-unit note (e.g. ₹166 per product)",
+          "default": "₹166 per product"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_featured",
+          "label": "Mark as Most Popular (gold border)",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "CTA button label",
+          "default": "Shop This Bundle"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "CTA button URL"
+        },
+        {
+          "type": "header",
+          "content": "Perks checklist"
+        },
+        {
+          "type": "text",
+          "id": "perk_1",
+          "label": "Perk 1",
+          "default": "Free shipping included"
+        },
+        {
+          "type": "text",
+          "id": "perk_2",
+          "label": "Perk 2",
+          "default": "30-day satisfaction guarantee"
+        },
+        {
+          "type": "text",
+          "id": "perk_3",
+          "label": "Perk 3",
+          "default": "100% plant-based formula"
+        },
+        {
+          "type": "header",
+          "content": "Products to display"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection (first 3 products shown as images)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Purelane Bundles",
+      "blocks": [
+        {
+          "type": "tier",
+          "settings": {
+            "tag": "Starter",
+            "qty": 1,
+            "price": "₹299",
+            "compare_price": "₹399",
+            "per_unit_note": "1 product",
+            "is_featured": false,
+            "cta_label": "Get Started",
+            "perk_1": "Free shipping over ₹499",
+            "perk_2": "30-day guarantee",
+            "perk_3": "100% plant-based"
+          }
+        },
+        {
+          "type": "tier",
+          "settings": {
+            "tag": "Family Bundle",
+            "qty": 3,
+            "price": "₹799",
+            "compare_price": "₹1099",
+            "per_unit_note": "₹266 per product",
+            "is_featured": true,
+            "cta_label": "Shop Family Bundle",
+            "perk_1": "Free shipping included",
+            "perk_2": "30-day satisfaction guarantee",
+            "perk_3": "Save 27% vs. individual"
+          }
+        },
+        {
+          "type": "tier",
+          "settings": {
+            "tag": "Home Pro",
+            "qty": 6,
+            "price": "₹1399",
+            "compare_price": "₹1999",
+            "per_unit_note": "₹233 per product",
+            "is_featured": false,
+            "cta_label": "Shop Pro Bundle",
+            "perk_1": "Free priority shipping",
+            "perk_2": "60-day guarantee",
+            "perk_3": "Save 30% vs. individual"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

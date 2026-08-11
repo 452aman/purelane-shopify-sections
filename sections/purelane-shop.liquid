@@ -1,0 +1,392 @@
+<style>
+/* ── Shop Section ── */
+#section-{{ section.id }} {
+  position: relative;
+  z-index: 2;
+  padding-block: var(--sec-y);
+}
+
+/* ── Product grid ── */
+.shelf {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin-top: 48px;
+}
+
+@media (max-width: 1000px) {
+  .shelf { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 720px) {
+  .shelf { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+}
+
+/* ── Product card ── */
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 36px 80px rgba(18,12,34,.55), var(--g-inset);
+}
+
+/* Image container */
+.shot {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: rgba(236,230,247,.06);
+}
+
+.shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .5s var(--ease);
+}
+
+.card:hover .shot img {
+  transform: scale(1.05);
+}
+
+.shot-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  background: linear-gradient(135deg, rgba(75,58,143,.20), rgba(23,16,43,.30));
+}
+
+/* Badge over image */
+.card-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  background: rgba(138,201,38,.22);
+  color: var(--lime, #8ac926);
+  border: 1px solid rgba(138,201,38,.32);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Discount badge */
+.card-discount {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  background: var(--accent-2);
+  color: #08211a;
+}
+
+/* Card body */
+.card-body {
+  padding: 18px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.card-vendor {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+}
+
+.card-title {
+  font-family: var(--font-head);
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--paper);
+  line-height: 1.3;
+  flex: 1;
+}
+
+.card-title a { color: inherit; }
+.card-title a:hover { color: var(--accent); }
+
+/* Rating row */
+.card-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card-rating .stars { font-size: .75rem; }
+
+.card-rating-count {
+  font-size: .75rem;
+  color: var(--paper-3);
+}
+
+/* Price row */
+.card-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.card-price {
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--paper);
+}
+
+.card-compare {
+  font-size: .85rem;
+  color: var(--paper-3);
+  text-decoration: line-through;
+}
+
+/* ATC button */
+.card-atc {
+  margin-top: 6px;
+  width: 100%;
+  height: 40px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  font-family: var(--font-head);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  border: none;
+  background: linear-gradient(135deg, var(--accent-2), #5d8d1c);
+  color: #08211a;
+  box-shadow: 0 8px 24px rgba(201,118,29,.28);
+  transition: .3s var(--ease);
+}
+
+.card-atc:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(201,118,29,.42);
+}
+
+.card-atc:disabled {
+  opacity: .7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Sold-out overlay */
+.card-atc.sold-out {
+  background: rgba(236,230,247,.12);
+  color: var(--paper-3);
+  box-shadow: none;
+  cursor: default;
+}
+</style>
+
+<section
+  id="section-{{ section.id }}"
+  class="sec"
+  data-scene="2"
+  aria-labelledby="shop-heading-{{ section.id }}"
+>
+  <div class="wrap">
+
+    <!-- Section header -->
+    <div class="panel-head rv">
+      <p class="kicker">{{ section.settings.kicker | default: 'Our Products' }}</p>
+      <h2 class="d2" id="shop-heading-{{ section.id }}">
+        {{ section.settings.title | default: 'Shop Plant-Based Cleaners' }}
+      </h2>
+      <div class="rule"></div>
+    </div>
+
+    <!-- Product grid -->
+    {%- assign products_limit = section.settings.products_to_show | default: 8 -%}
+
+    {%- if section.settings.collection != blank -%}
+      {%- assign featured_collection = collections[section.settings.collection] -%}
+    {%- endif -%}
+
+    {%- assign products_source = featured_collection.products | default: collections.all.products -%}
+
+    <div class="shelf" role="list">
+      {%- for product in products_source limit: products_limit -%}
+        {%- assign product_rating = product.metafields.reviews.rating.value | default: '4.8' -%}
+        {%- assign product_rating_count = product.metafields.reviews.rating_count.value | default: '0' -%}
+        {%- assign first_variant = product.selected_or_first_available_variant -%}
+        {%- assign show_compare = false -%}
+        {%- if first_variant.compare_at_price > first_variant.price -%}
+          {%- assign show_compare = true -%}
+          {%- assign savings_pct = first_variant.compare_at_price | minus: first_variant.price | times: 100 | divided_by: first_variant.compare_at_price -%}
+        {%- endif -%}
+
+        {%- comment -%} Pick a tag badge from product tags {%- endcomment -%}
+        {%- assign card_tag = '' -%}
+        {%- for tag in product.tags -%}
+          {%- assign tag_lower = tag | downcase -%}
+          {%- if tag_lower == 'bestseller' or tag_lower == 'best seller' or tag_lower == 'new' or tag_lower == 'new arrival' or tag_lower == 'sale' -%}
+            {%- assign card_tag = tag -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        <div class="card glass rv" data-delay="{{ forloop.index }}" role="listitem">
+
+          <!-- Product image -->
+          <div class="shot">
+            {%- if product.featured_image -%}
+              <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+                <img
+                  src="{{ product.featured_image | image_url: width: 600 }}"
+                  alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                  width="600"
+                  height="600"
+                  loading="lazy"
+                >
+              </a>
+            {%- else -%}
+              <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+                <div class="shot-placeholder" aria-hidden="true">🌿</div>
+              </a>
+            {%- endif -%}
+
+            {%- if card_tag != blank -%}
+              <span class="card-tag">{{ card_tag }}</span>
+            {%- endif -%}
+
+            {%- if show_compare -%}
+              <span class="card-discount">{{ savings_pct }}% OFF</span>
+            {%- endif -%}
+          </div>
+
+          <!-- Card body -->
+          <div class="card-body">
+            {%- if section.settings.show_vendor and product.vendor != blank -%}
+              <div class="card-vendor">{{ product.vendor }}</div>
+            {%- endif -%}
+
+            <h3 class="card-title">
+              <a href="{{ product.url }}">{{ product.title }}</a>
+            </h3>
+
+            {%- if product_rating_count != '0' and product_rating_count != 0 -%}
+              <div class="card-rating">
+                {%- assign rating_num = product_rating | plus: 0 -%}
+                {%- assign full_stars = rating_num | round -%}
+                <span class="stars" role="img" aria-label="{{ product_rating }} out of 5 stars">
+                  {%- for i in (1..full_stars) -%}★{%- endfor -%}
+                  {%- assign empty = 5 | minus: full_stars -%}
+                  {%- for i in (1..empty) -%}<span style="opacity:.3">★</span>{%- endfor -%}
+                </span>
+                <span class="card-rating-count">({{ product_rating_count }})</span>
+              </div>
+            {%- endif -%}
+
+            <div class="card-price-row">
+              <span class="card-price">{{ first_variant.price | money }}</span>
+              {%- if show_compare -%}
+                <span class="card-compare">{{ first_variant.compare_at_price | money }}</span>
+              {%- endif -%}
+            </div>
+
+            {%- if first_variant.available -%}
+              <button
+                class="card-atc"
+                data-atc
+                data-product-id="{{ product.id }}"
+                data-variant-id="{{ first_variant.id }}"
+                aria-label="Add {{ product.title | escape }} to cart"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                  <line x1="3" y1="6" x2="21" y2="6"/>
+                  <path d="M16 10a4 4 0 0 1-8 0"/>
+                </svg>
+                Add to Cart
+              </button>
+            {%- else -%}
+              <button class="card-atc sold-out" disabled aria-disabled="true">
+                Sold Out
+              </button>
+            {%- endif -%}
+          </div>
+
+        </div>
+      {%- else -%}
+        <p style="color:var(--paper-3);grid-column:1/-1;text-align:center;padding:40px 0;">
+          No products found. Please select a collection in the section settings.
+        </p>
+      {%- endfor -%}
+    </div><!-- /shelf -->
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Purelane Shop",
+  "tag": "div",
+  "class": "purelane-shop-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker label",
+      "default": "Our Products"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section heading",
+      "default": "Shop Plant-Based Cleaners"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection to display"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 12,
+      "step": 2,
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show product vendor",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Purelane Shop"
+    }
+  ]
+}
+{% endschema %}
